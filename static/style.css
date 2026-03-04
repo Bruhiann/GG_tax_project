@@ -1,6 +1,3 @@
-/* ── This file replaces static/style.css ── */
-/* Added: results, bracket table, bracket bars, actions styles */
-
 /* ── Reset & Base ──────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -63,6 +60,7 @@ body {
     text-decoration: none;
     font-size: 0.95rem;
     font-weight: 500;
+    transition: color 0.2s;
 }
 .nav-links a:hover { color: #fff; }
 
@@ -75,9 +73,19 @@ body {
 }
 
 /* ── Hero ──────────────────────────────────────────────────────────────────── */
-.hero { text-align: center; margin-bottom: 2rem; }
-.hero h1 { font-size: 1.9rem; color: var(--primary-dark); margin-bottom: 0.5rem; }
-.hero p { color: var(--text-muted); font-size: 1.05rem; }
+.hero {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.hero h1 {
+    font-size: 1.9rem;
+    color: var(--primary-dark);
+    margin-bottom: 0.5rem;
+}
+.hero p {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+}
 
 /* ── Cards ─────────────────────────────────────────────────────────────────── */
 .card {
@@ -98,7 +106,11 @@ body {
     border-bottom: 1px solid var(--border);
 }
 .form-section:last-of-type { border-bottom: none; }
-.form-section h3 { font-size: 1.05rem; color: var(--primary); margin-bottom: 0.8rem; }
+.form-section h3 {
+    font-size: 1.05rem;
+    color: var(--primary);
+    margin-bottom: 0.8rem;
+}
 
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 
@@ -108,6 +120,7 @@ body {
     font-weight: 600;
     font-size: 0.9rem;
     margin-bottom: 0.35rem;
+    color: var(--text);
 }
 
 .form-group input,
@@ -117,11 +130,14 @@ body {
     border: 1.5px solid var(--border);
     border-radius: 6px;
     font-size: 1rem;
+    transition: border-color 0.2s;
+    background: #fff;
 }
 .form-group input:focus,
 .form-group select:focus {
     outline: none;
     border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(26,86,50,0.1);
 }
 
 .input-prefix {
@@ -130,6 +146,11 @@ body {
     border: 1.5px solid var(--border);
     border-radius: 6px;
     overflow: hidden;
+    transition: border-color 0.2s;
+}
+.input-prefix:focus-within {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(26,86,50,0.1);
 }
 .input-prefix span {
     padding: 0.65rem 0.75rem;
@@ -138,9 +159,16 @@ body {
     font-weight: 600;
     border-right: 1.5px solid var(--border);
 }
-.input-prefix input { border: none !important; }
+.input-prefix input {
+    border: none !important;
+    box-shadow: none !important;
+}
 
-.form-hint { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.8rem; }
+.form-hint {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 0.8rem;
+}
 
 /* ── Buttons ───────────────────────────────────────────────────────────────── */
 .btn {
@@ -152,8 +180,12 @@ body {
     text-decoration: none;
     cursor: pointer;
     border: none;
+    transition: all 0.2s;
 }
-.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary {
+    background: var(--primary);
+    color: #fff;
+}
 .btn-primary:hover { background: var(--primary-light); }
 .btn-secondary {
     background: transparent;
@@ -162,20 +194,11 @@ body {
 }
 .btn-secondary:hover { background: var(--accent); }
 
-/* ── Info Card ─────────────────────────────────────────────────────────────── */
-.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
-.info-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.6rem 0.8rem;
-    background: var(--bg);
-    border-radius: 6px;
-}
-.info-label { color: var(--text-muted); font-size: 0.9rem; }
-.info-value { font-weight: 700; color: var(--primary-dark); }
-
 /* ── Results ───────────────────────────────────────────────────────────────── */
-.result-highlight { text-align: center; padding: 2.5rem 2rem; }
+.result-highlight {
+    text-align: center;
+    padding: 2.5rem 2rem;
+}
 .result-amount { display: flex; flex-direction: column; gap: 0.3rem; }
 .result-label { font-size: 1.1rem; color: var(--text-muted); font-weight: 500; }
 .result-value { font-size: 2.8rem; font-weight: 800; }
@@ -234,6 +257,7 @@ body {
     background: linear-gradient(90deg, var(--primary), var(--primary-light));
     border-radius: 4px;
     min-width: 4px;
+    transition: width 0.5s ease;
 }
 .bracket-amount { width: 80px; font-size: 0.85rem; color: var(--text-muted); }
 
@@ -246,13 +270,112 @@ body {
     margin: 2rem 0;
 }
 
+/* ── Info Card / Grid ──────────────────────────────────────────────────────── */
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.6rem 0.8rem;
+    background: var(--bg);
+    border-radius: 6px;
+}
+.info-label { color: var(--text-muted); font-size: 0.9rem; }
+.info-value { font-weight: 700; color: var(--primary-dark); }
+
+/* ── Chat ──────────────────────────────────────────────────────────────────── */
+.chat-card { padding: 0; overflow: hidden; }
+
+.chat-window {
+    height: 420px;
+    overflow-y: auto;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.chat-message { display: flex; }
+.chat-message.user { justify-content: flex-end; }
+.chat-message.assistant { justify-content: flex-start; }
+
+.chat-bubble {
+    max-width: 75%;
+    padding: 0.8rem 1.1rem;
+    border-radius: 16px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+.chat-message.user .chat-bubble {
+    background: var(--primary);
+    color: #fff;
+    border-bottom-right-radius: 4px;
+}
+.chat-message.assistant .chat-bubble {
+    background: var(--bg);
+    color: var(--text);
+    border-bottom-left-radius: 4px;
+}
+
+/* Typing indicator */
+.typing .chat-bubble { display: flex; gap: 0.3rem; align-items: center; padding: 1rem 1.3rem; }
+.dot {
+    width: 8px; height: 8px;
+    background: var(--text-muted);
+    border-radius: 50%;
+    animation: bounce 1.2s infinite;
+}
+.dot:nth-child(2) { animation-delay: 0.2s; }
+.dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes bounce {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-6px); }
+}
+
+.chat-input-area {
+    display: flex;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--border);
+    gap: 0.8rem;
+    background: var(--bg);
+}
+.chat-input-area input {
+    flex: 1;
+    padding: 0.7rem 1rem;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-size: 1rem;
+}
+.chat-input-area input:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+.chat-input-area .btn { padding: 0.7rem 1.5rem; }
+
+.example-questions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.example-btn {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text);
+}
+.example-btn:hover {
+    background: var(--accent);
+    border-color: var(--primary);
+}
+
 /* ── Alerts ────────────────────────────────────────────────────────────────── */
 .alert {
     padding: 0.8rem 1.2rem;
     border-radius: 6px;
     margin-bottom: 1rem;
+    font-size: 0.95rem;
 }
 .alert-error { background: #fdeaea; color: var(--owed-red); border: 1px solid #f5c6c6; }
+.alert-success { background: var(--accent); color: var(--refund-green); border: 1px solid #c8e6c9; }
 
 /* ── Footer ────────────────────────────────────────────────────────────────── */
 .footer {
@@ -264,3 +387,13 @@ body {
     margin-top: auto;
 }
 .footer p { margin-bottom: 0.2rem; }
+
+/* ── Responsive ────────────────────────────────────────────────────────────── */
+@media (max-width: 700px) {
+    .form-row,
+    .results-grid,
+    .info-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 1.5rem; }
+    .result-value { font-size: 2rem; }
+    .chat-bubble { max-width: 88%; }
+}
