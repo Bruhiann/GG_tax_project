@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %}AI Tax Agent — AI Assistant{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h1>AI Tax Assistant</h1>
+    <p>Ask questions about your taxes, deductions, filing status, or anything tax-related.</p>
+</div>
+
+<div class="card chat-card">
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-message assistant">
+            <div class="chat-bubble">
+                Hi! I'm your AI tax assistant. I can help answer questions about federal income tax,
+                deductions, filing statuses, and more. What would you like to know?
+            </div>
+        </div>
+    </div>
+
+    <div class="chat-input-area">
+        <input type="text" id="chatInput" placeholder="Ask a tax question..."
+               autocomplete="off">
+        <button id="chatSend" class="btn btn-primary">Send</button>
+    </div>
+</div>
+
+<div class="card info-card">
+    <h3>Example Questions</h3>
+    <div class="example-questions">
+        <button class="example-btn" onclick="askExample(this)">
+            What's the difference between standard and itemized deductions?
+        </button>
+        <button class="example-btn" onclick="askExample(this)">
+            Should I file as Head of Household or Single?
+        </button>
+        <button class="example-btn" onclick="askExample(this)">
+            What deductions can I claim as a freelancer?
+        </button>
+        <button class="example-btn" onclick="askExample(this)">
+            How do tax brackets actually work?
+        </button>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const chatWindow = document.getElementById("chatWindow");
+    const chatInput = document.getElementById("chatInput");
+    const chatSend = document.getElementById("chatSend");
+
+    function addMessage(text, role) {
+        const div = document.createElement("div");
+        div.className = `chat-message ${role}`;
+        div.innerHTML = `<div class="chat-bubble">${text}</div>`;
+        chatWindow.appendChild(div);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+
+    async function sendMessage() {
+        const message = chatInput.value.trim();
+        if (!message) return;
+
+        addMessage(message, "user");
+        chatInput.value = "";
+        chatSend.disabled = true;
+
+        // Show typing indicator
+        const typingDiv = document.createElement("div");
+        typingDiv.className = "chat-message assistant typing";
+        typingDiv.innerHTML = '<div class="chat-bubble"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>';
+        chatWindow.appendChild(typingDiv);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+
+        try {
+            const res = await fetch("/chat/ask", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message }),
+            });
+            const data = await res.json();
+            typingDiv.remove();
+            addMessage(data.response, "assistant");
+        } catch (err) {
+            typingDiv.remove();
+            addMessage("Sorry, something went wrong. Please try again.", "assistant");
+        }
+
+        chatSend.disabled = false;
+        chatInput.focus();
+    }
+
+    chatSend.addEventListener("click", sendMessage);
+    chatInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") sendMessage();
+    });
+
+    function askExample(btn) {
+        chatInput.value = btn.textContent.trim();
+        sendMessage();
+    }
+</script>
+{% endblock %}
