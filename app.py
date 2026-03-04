@@ -1,13 +1,13 @@
 """
 AI Tax Return Agent — Flask Application
 -----------------------------------------
-Handles tax input form, calculation, and results display.
+Handles tax input form, calculation, results display, and PDF download.
 """
 
 import os
 from flask import (
     Flask, render_template, request, redirect,
-    url_for, flash, session
+    url_for, flash, session, send_file
 )
 from tax_engine import calculate_tax, FILING_STATUS_LABELS
 
@@ -28,7 +28,6 @@ def calculate():
     Validates input, runs the tax engine, and stores results in the session.
     """
     try:
-        # Pull and validate form data
         gross_income = float(request.form.get("gross_income", 0))
         filing_status = request.form.get("filing_status", "single")
         deductions = float(request.form.get("deductions", 0))
@@ -42,10 +41,8 @@ def calculate():
             flash("Invalid filing status selected.", "error")
             return redirect(url_for("index"))
 
-        # Run the tax engine
         result = calculate_tax(gross_income, filing_status, deductions, withholdings)
 
-        # Store in session for later use (PDF download, etc.)
         session["tax_result"] = result
         session["user_name"] = request.form.get("taxpayer_name", "Taxpayer")
         session["ssn_last4"] = request.form.get("ssn_last4", "XXXX")
@@ -56,6 +53,25 @@ def calculate():
     except (ValueError, TypeError) as e:
         flash(f"Invalid input: {e}", "error")
         return redirect(url_for("index"))
+
+
+@app.route("/download")
+def download_pdf():
+    """Generate a simplified 1040-style PDF and send it as a download."""
+    result = session.get("tax_result")
+    if not result:
+        flash("No tax calculation found. Please fill out the form first.", "error")
+        return redirect(url_for("index"))
+
+    from generate_pdf import create_tax_return_pdf
+
+    pdf_path = create_tax_return_pdf(
+        result,
+        taxpayer_name=session.get("user_name", "Taxpayer"),
+        ssn_last4=session.get("ssn_last4", "XXXX"),
+    )
+    return send_file(pdf_path, as_attachment=True,
+                     download_name="tax_return_1040.pdf")
 
 
 if __name__ == "__main__":
