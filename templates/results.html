@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block title %}AI Tax Agent — Your Results{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h1>Tax Calculation Results</h1>
+    <p>Here's your 2024 federal income tax summary, {{ taxpayer_name }}.</p>
+</div>
+
+<!-- Main Result Card -->
+<div class="card result-highlight">
+    <div class="result-amount {% if result.refund_or_owed == 'refund' %}refund{% else %}owed{% endif %}">
+        {% if result.refund_or_owed == "refund" %}
+            <span class="result-label">Your Estimated Refund</span>
+            <span class="result-value">${{ "{:,.2f}".format(result.balance) }}</span>
+        {% else %}
+            <span class="result-label">Estimated Tax Owed</span>
+            <span class="result-value">${{ "{:,.2f}".format(result.balance) }}</span>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Detailed Breakdown -->
+<div class="results-grid">
+    <div class="card">
+        <h3>Income Summary</h3>
+        <div class="breakdown">
+            <div class="breakdown-row">
+                <span>Gross Income</span>
+                <span>${{ "{:,.2f}".format(result.gross_income) }}</span>
+            </div>
+            <div class="breakdown-row">
+                <span>Filing Status</span>
+                <span>{{ result.filing_status_label }}</span>
+            </div>
+            <div class="breakdown-row">
+                <span>Deduction ({{ result.deduction_type }})</span>
+                <span>- ${{ "{:,.2f}".format(result.applied_deduction) }}</span>
+            </div>
+            <div class="breakdown-row total">
+                <span>Taxable Income</span>
+                <span>${{ "{:,.2f}".format(result.taxable_income) }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Tax Summary</h3>
+        <div class="breakdown">
+            <div class="breakdown-row">
+                <span>Total Tax</span>
+                <span>${{ "{:,.2f}".format(result.tax_owed) }}</span>
+            </div>
+            <div class="breakdown-row">
+                <span>Effective Tax Rate</span>
+                <span>{{ result.effective_rate }}%</span>
+            </div>
+            <div class="breakdown-row">
+                <span>Marginal Tax Rate</span>
+                <span>{{ result.marginal_rate }}%</span>
+            </div>
+            <div class="breakdown-row">
+                <span>Federal Withholdings</span>
+                <span>- ${{ "{:,.2f}".format(result.withholdings) }}</span>
+            </div>
+            <div class="breakdown-row total {% if result.refund_or_owed == 'refund' %}refund-text{% else %}owed-text{% endif %}">
+                <span>{{ "Refund" if result.refund_or_owed == "refund" else "Balance Due" }}</span>
+                <span>${{ "{:,.2f}".format(result.balance) }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bracket Breakdown -->
+<div class="card">
+    <h3>Tax Bracket Breakdown</h3>
+    <div class="bracket-table-wrap">
+        <table class="bracket-table">
+            <thead>
+                <tr>
+                    <th>Bracket</th>
+                    <th>Rate</th>
+                    <th>Income in Bracket</th>
+                    <th>Tax</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for b in result.bracket_breakdown %}
+                <tr>
+                    <td>${{ "{:,.0f}".format(b.range_low) }} — ${{ "{:,.0f}".format(b.range_high) }}</td>
+                    <td>{{ (b.rate * 100)|int }}%</td>
+                    <td>${{ "{:,.2f}".format(b.income_in_bracket) }}</td>
+                    <td>${{ "{:,.2f}".format(b.tax_in_bracket) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3"><strong>Total Federal Tax</strong></td>
+                    <td><strong>${{ "{:,.2f}".format(result.tax_owed) }}</strong></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<!-- Bracket Visualization -->
+<div class="card">
+    <h3>Tax Bracket Visualization</h3>
+    <div class="bracket-bars">
+        {% for b in result.bracket_breakdown %}
+        <div class="bracket-bar-row">
+            <span class="bracket-label">{{ (b.rate * 100)|int }}%</span>
+            <div class="bracket-bar-bg">
+                <div class="bracket-bar-fill"
+                     style="width: {{ (b.income_in_bracket / result.taxable_income * 100) if result.taxable_income > 0 else 0 }}%">
+                </div>
+            </div>
+            <span class="bracket-amount">${{ "{:,.0f}".format(b.tax_in_bracket) }}</span>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Actions -->
+<div class="actions">
+    <a href="{{ url_for('download_pdf') }}" class="btn btn-primary">Download Tax Return (PDF)</a>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">Start Over</a>
+</div>
+{% endblock %}

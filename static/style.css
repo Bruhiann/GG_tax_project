@@ -1,3 +1,6 @@
+/* ── This file replaces static/style.css ── */
+/* Added: results, bracket table, bracket bars, actions styles */
+
 /* ── Reset & Base ──────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -157,6 +160,7 @@ body {
     color: var(--primary);
     border: 1.5px solid var(--primary);
 }
+.btn-secondary:hover { background: var(--accent); }
 
 /* ── Info Card ─────────────────────────────────────────────────────────────── */
 .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
@@ -169,6 +173,78 @@ body {
 }
 .info-label { color: var(--text-muted); font-size: 0.9rem; }
 .info-value { font-weight: 700; color: var(--primary-dark); }
+
+/* ── Results ───────────────────────────────────────────────────────────────── */
+.result-highlight { text-align: center; padding: 2.5rem 2rem; }
+.result-amount { display: flex; flex-direction: column; gap: 0.3rem; }
+.result-label { font-size: 1.1rem; color: var(--text-muted); font-weight: 500; }
+.result-value { font-size: 2.8rem; font-weight: 800; }
+.result-amount.refund .result-value { color: var(--refund-green); }
+.result-amount.owed .result-value { color: var(--owed-red); }
+
+.results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+
+.breakdown { display: flex; flex-direction: column; gap: 0.6rem; }
+.breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    font-size: 0.95rem;
+}
+.breakdown-row.total {
+    border-top: 2px solid var(--border);
+    padding-top: 0.8rem;
+    font-weight: 700;
+    font-size: 1.05rem;
+}
+.refund-text span:last-child { color: var(--refund-green); }
+.owed-text span:last-child { color: var(--owed-red); }
+
+/* ── Bracket Table ─────────────────────────────────────────────────────────── */
+.bracket-table-wrap { overflow-x: auto; }
+.bracket-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+.bracket-table th {
+    text-align: left;
+    padding: 0.7rem 1rem;
+    background: var(--accent);
+    color: var(--primary-dark);
+    font-weight: 600;
+    border-bottom: 2px solid var(--primary);
+}
+.bracket-table td { padding: 0.65rem 1rem; border-bottom: 1px solid var(--border); }
+.bracket-table tfoot td {
+    font-weight: 700;
+    border-top: 2px solid var(--primary);
+    background: var(--accent);
+}
+
+/* ── Bracket Bars ──────────────────────────────────────────────────────────── */
+.bracket-bars { display: flex; flex-direction: column; gap: 0.7rem; }
+.bracket-bar-row { display: flex; align-items: center; gap: 0.8rem; }
+.bracket-label { width: 40px; font-weight: 600; font-size: 0.9rem; text-align: right; }
+.bracket-bar-bg {
+    flex: 1;
+    height: 28px;
+    background: var(--bg);
+    border-radius: 4px;
+    overflow: hidden;
+}
+.bracket-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    border-radius: 4px;
+    min-width: 4px;
+}
+.bracket-amount { width: 80px; font-size: 0.85rem; color: var(--text-muted); }
+
+/* ── Actions ───────────────────────────────────────────────────────────────── */
+.actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 2rem 0;
+}
 
 /* ── Alerts ────────────────────────────────────────────────────────────────── */
 .alert {
