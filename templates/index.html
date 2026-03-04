@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block title %}AI Tax Agent — File Your Return{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h1>AI-Powered Tax Return Preparation</h1>
+    <p>Enter your tax information below to calculate your federal income tax for the 2024 tax year.</p>
+</div>
+
+<div class="card form-card">
+    <h2>Tax Information</h2>
+    <form action="{{ url_for('calculate') }}" method="POST" id="taxForm">
+
+        <!-- Personal Info Section -->
+        <div class="form-section">
+            <h3>Personal Information</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="taxpayer_name">Full Name</label>
+                    <input type="text" id="taxpayer_name" name="taxpayer_name"
+                           placeholder="John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label for="ssn_last4">SSN (last 4 digits)</label>
+                    <input type="text" id="ssn_last4" name="ssn_last4"
+                           placeholder="XXXX" maxlength="4" pattern="\d{4}"
+                           title="Enter the last 4 digits of your SSN">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="filing_status">Filing Status</label>
+                <select id="filing_status" name="filing_status" required>
+                    {% for value, label in filing_statuses.items() %}
+                        <option value="{{ value }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <!-- Income Section -->
+        <div class="form-section">
+            <h3>Income</h3>
+            <div class="form-group">
+                <label for="gross_income">Gross Income (W-2, 1099, etc.)</label>
+                <div class="input-prefix">
+                    <span>$</span>
+                    <input type="number" id="gross_income" name="gross_income"
+                           placeholder="0.00" min="0" step="0.01" required>
+                </div>
+            </div>
+        </div>
+
+        <!-- Deductions Section -->
+        <div class="form-section">
+            <h3>Deductions</h3>
+            <p class="form-hint">
+                Enter itemized deductions if they exceed the standard deduction.
+                Otherwise, the standard deduction will be applied automatically.
+            </p>
+            <div class="form-group">
+                <label for="deductions">Itemized Deductions</label>
+                <div class="input-prefix">
+                    <span>$</span>
+                    <input type="number" id="deductions" name="deductions"
+                           placeholder="0.00" min="0" step="0.01" value="0">
+                </div>
+            </div>
+        </div>
+
+        <!-- Withholdings Section -->
+        <div class="form-section">
+            <h3>Tax Payments & Withholdings</h3>
+            <div class="form-group">
+                <label for="withholdings">Federal Tax Withheld (from W-2)</label>
+                <div class="input-prefix">
+                    <span>$</span>
+                    <input type="number" id="withholdings" name="withholdings"
+                           placeholder="0.00" min="0" step="0.01" value="0">
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Calculate My Taxes</button>
+    </form>
+</div>
+
+<div class="card info-card">
+    <h3>2024 Standard Deductions</h3>
+    <div class="info-grid">
+        <div class="info-item">
+            <span class="info-label">Single</span>
+            <span class="info-value">$14,600</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Married Filing Jointly</span>
+            <span class="info-value">$29,200</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Married Filing Separately</span>
+            <span class="info-value">$14,600</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Head of Household</span>
+            <span class="info-value">$21,900</span>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Client-side validation
+    document.getElementById("taxForm").addEventListener("submit", function(e) {
+        const income = parseFloat(document.getElementById("gross_income").value);
+        if (isNaN(income) || income < 0) {
+            e.preventDefault();
+            alert("Please enter a valid gross income.");
+        }
+    });
+</script>
+{% endblock %}
