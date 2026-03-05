@@ -1,14 +1,12 @@
 """
 Tax Calculation Engine
-----------------------
+
 Implements 2024 federal income tax logic including:
 - Progressive tax brackets for all filing statuses
 - Standard deductions
 - Taxable income computation
 - Effective tax rate calculation
 
-This module is intentionally separated from the Flask app
-so the calculation logic can be tested and reused independently.
 """
 
 # 2024 Federal Tax Brackets
