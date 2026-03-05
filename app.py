@@ -151,7 +151,7 @@ def chat_ask():
         return jsonify({"response": f"Error connecting to AI service: {str(e)}"})
 
 
-# ─── Entry Point ──────────────────────────────────────────────────────────────
+# Entry Point 
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
