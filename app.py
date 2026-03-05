@@ -15,7 +15,7 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-key-change-in-production")
 
 
-# ─── Routes ───────────────────────────────────────────────────────────────────
+# Routes 
 
 @app.route("/")
 def index():
