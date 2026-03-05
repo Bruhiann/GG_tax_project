@@ -1,6 +1,6 @@
 # AI Tax Return Agent Prototype
 
-An AI-powered tax return preparation agent that automates basic federal income tax calculations for the 2024 tax year. Built as a case study prototype for GreenGrowth CPAs.
+An AI-powered tax return preparation agent that automates basic federal income tax calculations for the 2024 tax year.
 
 ## Features
 
