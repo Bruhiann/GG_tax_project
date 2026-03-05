@@ -1,6 +1,6 @@
 """
 PDF Tax Return Generator
-------------------------
+
 Creates a simplified 1040-style tax return form using reportlab.
 Generates a professional-looking PDF with the calculated tax results.
 """
@@ -45,7 +45,7 @@ def create_tax_return_pdf(result: dict, taxpayer_name: str = "Taxpayer",
     c = canvas.Canvas(pdf_path, pagesize=letter)
     width, height = letter
 
-    # ── Header ────────────────────────────────────────────────────────────
+    # Header 
     # Green header bar
     c.setFillColor(GREEN)
     c.rect(0, height - 80, width, 80, fill=True, stroke=False)
@@ -60,7 +60,7 @@ def create_tax_return_pdf(result: dict, taxpayer_name: str = "Taxpayer",
 
     y = height - 110
 
-    # ── Personal Info Section ─────────────────────────────────────────────
+    # Personal Info Section
     c.setFillColor(LIGHT_GREEN)
     c.rect(40, y - 50, width - 80, 50, fill=True, stroke=False)
     c.setStrokeColor(GREEN)
@@ -89,7 +89,7 @@ def create_tax_return_pdf(result: dict, taxpayer_name: str = "Taxpayer",
 
     y -= 80
 
-    # ── Helper: draw a labeled row ────────────────────────────────────────
+    # Helper: draw a labeled row
     def draw_row(y_pos, line_num, label, value, bold=False, highlight=False):
         if highlight:
             c.setFillColor(LIGHT_GREEN)
@@ -117,7 +117,7 @@ def create_tax_return_pdf(result: dict, taxpayer_name: str = "Taxpayer",
 
         return y_pos - 26
 
-    # ── Section: Income ───────────────────────────────────────────────────
+    # Section: Income
     c.setFillColor(GREEN)
     c.setFont("Helvetica-Bold", 12)
     c.drawString(50, y, "Income")
@@ -132,7 +132,7 @@ def create_tax_return_pdf(result: dict, taxpayer_name: str = "Taxpayer",
 
     y -= 10
 
-    # ── Section: Deductions ───────────────────────────────────────────────
+    # Section: Deductions
     c.setFillColor(GREEN)
     c.setFont("Helvetica-Bold", 12)
     c.drawString(50, y, "Adjustments & Deductions")
@@ -150,7 +150,7 @@ def create_tax_return_pdf(result: dict, taxpayer_name: str = "Taxpayer",
 
     y -= 10
 
-    # ── Section: Tax Computation ──────────────────────────────────────────
+    # Section: Tax Computation
     c.setFillColor(GREEN)
     c.setFont("Helvetica-Bold", 12)
     c.drawString(50, y, "Tax Computation")
@@ -165,7 +165,7 @@ def create_tax_return_pdf(result: dict, taxpayer_name: str = "Taxpayer",
 
     y -= 10
 
-    # ── Section: Payments ─────────────────────────────────────────────────
+    # Section: Payments
     c.setFillColor(GREEN)
     c.setFont("Helvetica-Bold", 12)
     c.drawString(50, y, "Payments")
@@ -180,7 +180,7 @@ def create_tax_return_pdf(result: dict, taxpayer_name: str = "Taxpayer",
 
     y -= 10
 
-    # ── Section: Refund or Amount Owed ────────────────────────────────────
+    # Section: Refund or Amount Owed
     c.setFillColor(GREEN)
     c.setFont("Helvetica-Bold", 12)
     c.drawString(50, y, "Refund or Amount You Owe")
@@ -199,7 +199,7 @@ def create_tax_return_pdf(result: dict, taxpayer_name: str = "Taxpayer",
 
     y -= 10
 
-    # ── Tax Rate Summary Box ──────────────────────────────────────────────
+    # Tax Rate Summary Box
     c.setFillColor(LIGHT_GREEN)
     c.roundRect(40, y - 60, width - 80, 55, 6, fill=True, stroke=False)
     c.setStrokeColor(GREEN)
@@ -217,7 +217,7 @@ def create_tax_return_pdf(result: dict, taxpayer_name: str = "Taxpayer",
 
     y -= 85
 
-    # ── Bracket Breakdown Table ───────────────────────────────────────────
+    # Bracket Breakdown Table
     if y > 200 and result.get("bracket_breakdown"):
         c.setFillColor(GREEN)
         c.setFont("Helvetica-Bold", 11)
@@ -249,7 +249,7 @@ def create_tax_return_pdf(result: dict, taxpayer_name: str = "Taxpayer",
             c.line(50, y - 5, width - 50, y - 5)
             y -= 18
 
-    # ── Disclaimer ────────────────────────────────────────────────────────
+    # Disclaimer
     c.setFillColor(GRAY)
     c.setFont("Helvetica-Oblique", 7)
     c.drawCentredString(width / 2, 35,
