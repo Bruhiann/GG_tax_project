@@ -1,16 +1,5 @@
 """
 AI Tax Return Agent — Flask Application
------------------------------------------
-Main application file handling:
-- GET  /           → Tax input form
-- POST /calculate   → Process input, render results
-- GET  /download    → Generate and download simplified 1040 PDF
-- GET  /chat        → AI tax chat assistant page
-- POST /chat/ask    → API endpoint for AI chat messages
-
-Architecture:
-  Browser → Flask routes → tax_engine.py → templates
-  Browser → /chat/ask → Claude API → JSON response
 """
 
 import os
